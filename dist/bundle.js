@@ -46,20 +46,30 @@
 
 	'use strict';
 	
+	var _grid = __webpack_require__(2);
+	
+	var _grid2 = _interopRequireDefault(_grid);
+	
 	var _Tone = __webpack_require__(1);
 	
 	var _Tone2 = _interopRequireDefault(_Tone);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var Grid = __webpack_require__(2);
-	
-	
 	document.addEventListener("DOMContentLoaded", function () {
 	  var freeverb = new _Tone2.default.Freeverb(0.9).toMaster();
 	  var synth = new _Tone2.default.PolySynth(6).connect(freeverb);
-	  var grid = new Grid(document.body, synth);
+	  synth.volume.value = -10;
+	  var grid = new _grid2.default(document.body, synth);
 	  var slider = document.getElementById("slider");
+	
+	  var keyButton = document.createElement('button');
+	  keyButton.innerHTML = "Melodic Minor";
+	  keyButton.addEventListener('click', function () {
+	    grid.changeKey("MEL_MINOR");
+	  });
+	  document.body.appendChild(keyButton);
+	
 	  var clearButton = document.createElement('button');
 	  clearButton.innerHTML = "Clear";
 	  clearButton.addEventListener('click', function () {
@@ -22025,15 +22035,23 @@
 /* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _key_constants = __webpack_require__(4);
+	
+	var Keys = _interopRequireWildcard(_key_constants);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	var Cell = __webpack_require__(3);
-	
-	var NOTES = ["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5", "D5", "E5", "F5", "G5", "A5", "B5", "C6", "D6"].reverse();
 	
 	var Grid = function () {
 	  function Grid(container, synth) {
@@ -22049,24 +22067,24 @@
 	  }
 	
 	  _createClass(Grid, [{
-	    key: "createGrid",
+	    key: 'createGrid',
 	    value: function createGrid() {
 	      for (var i = 0; i < 16; i++) {
 	        this.cells[i] = [];
 	        for (var j = 0; j < 16; j++) {
 	          var cellDiv = document.createElement("DIV");
-	          var cell = new Cell(NOTES[i], this.synth, cellDiv);
+	          var cell = new Cell(Keys.MAJOR[i], this.synth, cellDiv);
 	          cellDiv.cell = cell;
 	          this.cells[i][j] = cell;
-	          this.addListener(cellDiv);
+	          this.addListeners(cellDiv);
 	          cellDiv.className = "cell";
 	          this.element.appendChild(cellDiv);
 	        }
 	      }
 	    }
 	  }, {
-	    key: "addListener",
-	    value: function addListener(cellDiv) {
+	    key: 'addListeners',
+	    value: function addListeners(cellDiv) {
 	      var _this = this;
 	
 	      cellDiv.addEventListener('mouseenter', function (e) {
@@ -22079,13 +22097,21 @@
 	      });
 	    }
 	  }, {
-	    key: "clear",
+	    key: 'clear',
 	    value: function clear() {
-	      debugger;
 	      this.cells.forEach(function (row) {
 	        return row.forEach(function (cell) {
 	          cell.active = false;
 	          cell.container.className = "cell";
+	        });
+	      });
+	    }
+	  }, {
+	    key: 'changeKey',
+	    value: function changeKey(key) {
+	      this.cells.forEach(function (row, idx) {
+	        return row.forEach(function (cell) {
+	          cell.note = Keys[key][idx];
 	        });
 	      });
 	    }
@@ -22094,7 +22120,7 @@
 	  return Grid;
 	}();
 	
-	module.exports = Grid;
+	exports.default = Grid;
 
 /***/ },
 /* 3 */
@@ -22138,6 +22164,33 @@
 	}();
 	
 	module.exports = Cell;
+
+/***/ },
+/* 4 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	                  value: true
+	});
+	var MAJOR = exports.MAJOR = ["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5", "D5", "E5", "F5", "G5", "A5", "B5", "C6", "D6"].reverse();
+	
+	var HARM_MINOR = exports.HARM_MINOR = ["C4", "D4", "Eb4", "F4", "G4", "Ab4", "B4", "C5", "D5", "Eb5", "F5", "G5", "Ab5", "B5", "C6", "D6"].reverse();
+	
+	var MEL_MINOR = exports.MEL_MINOR = ["C4", "D4", "Eb4", "F4", "G4", "A4", "B4", "C5", "D5", "Eb5", "F5", "G5", "A5", "B5", "C6", "D6"].reverse();
+	
+	var HARM_MAJOR = exports.HARM_MAJOR = ["C4", "D4", "E4", "F4", "G4", "Ab4", "B4", "C5", "D5", "E5", "F5", "G5", "Ab5", "B5", "C6", "D6"].reverse();
+	
+	var DIMINISHED = exports.DIMINISHED = ["C4", "D4", "Eb4", "F4", "Gb4", "Ab4", "A4", "B4", "C5", "D5", "Eb5", "F5", "Gb5", "Ab5", "A5", "B5"].reverse();
+	
+	var MAJ_PENT = exports.MAJ_PENT = ["C4", "D4", "E4", "G4", "A4", "C5", "D5", "E5", "G5", "A5", "C6", "D6", "E6", "G6", "A6", "C7"].reverse();
+	
+	var DORIAN_PENT = exports.DORIAN_PENT = ["C4", "D4", "Eb4", "G4", "A4", "C5", "D5", "Eb5", "G5", "A5", "C6", "D6", "Eb6", "G6", "A6", "C7"].reverse();
+	
+	var LYDIAN_PENT = exports.LYDIAN_PENT = ["C4", "E4", "F#4", "A4", "B4", "C5", "E5", "F#5", "A5", "B5", "C6", "E6", "F#6", "A6", "B6", "C7"].reverse();
+	//
+	// export const
 
 /***/ }
 /******/ ]);

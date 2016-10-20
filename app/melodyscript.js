@@ -1,11 +1,20 @@
-const Grid = require('./grid.js');
+import Grid from './grid.js';
 import Tone from 'Tone';
 
 document.addEventListener("DOMContentLoaded", () => {
   const freeverb = new Tone.Freeverb(0.9).toMaster();
   const synth = new Tone.PolySynth(6).connect(freeverb);
+  synth.volume.value = -10;
   const grid = new Grid(document.body, synth);
   const slider = document.getElementById("slider");
+
+  const keyButton = document.createElement('button');
+  keyButton.innerHTML = "Melodic Minor";
+  keyButton.addEventListener('click', () => {
+    grid.changeKey("MEL_MINOR");
+  });
+  document.body.appendChild(keyButton);
+
   const clearButton = document.createElement('button');
   clearButton.innerHTML = "Clear";
   clearButton.addEventListener('click', () => {

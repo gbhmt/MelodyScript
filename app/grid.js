@@ -1,9 +1,5 @@
 const Cell = require('./cell.js');
-
-const NOTES = ["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5",
-               "D5", "E5", "F5", "G5", "A5", "B5", "C6", "D6"].reverse();
-
-
+import * as Keys from './key_constants.js';
 
 class Grid {
   constructor(container, synth) {
@@ -21,17 +17,17 @@ class Grid {
       this.cells[i] = [];
       for (var j = 0; j < 16; j++) {
         const cellDiv = document.createElement("DIV");
-        const cell = new Cell(NOTES[i], this.synth, cellDiv);
+        const cell = new Cell(Keys.MAJOR[i], this.synth, cellDiv);
         cellDiv.cell = cell;
         this.cells[i][j] = cell;
-        this.addListener(cellDiv);
+        this.addListeners(cellDiv);
         cellDiv.className = "cell";
         this.element.appendChild(cellDiv);
       }
     }
   }
 
-  addListener (cellDiv) {
+  addListeners (cellDiv) {
     cellDiv.addEventListener('mouseenter', (e) => {
       if (this.mousedown) {
         e.currentTarget.cell.toggleActive();
@@ -43,7 +39,6 @@ class Grid {
   }
 
   clear () {
-    debugger
     this.cells.forEach((row) => {
       return row.forEach((cell) => {
         cell.active = false;
@@ -51,6 +46,14 @@ class Grid {
       });
     });
   }
+
+  changeKey (key) {
+    this.cells.forEach((row, idx) => {
+      return row.forEach((cell) => {
+        cell.note = Keys[key][idx];
+      });
+    });
+  }
 }
 
-module.exports = Grid;
+export default Grid;
