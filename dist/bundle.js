@@ -54,28 +54,27 @@
 	
 	var _Tone2 = _interopRequireDefault(_Tone);
 	
+	var _buttons = __webpack_require__(5);
+	
+	var _buttons2 = _interopRequireDefault(_buttons);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	document.addEventListener("DOMContentLoaded", function () {
 	  var freeverb = new _Tone2.default.Freeverb(0.9).toMaster();
 	  var synth = new _Tone2.default.PolySynth(6).connect(freeverb);
 	  synth.volume.value = -10;
-	  var grid = new _grid2.default(document.body, synth);
+	
+	  var gridAndButtons = document.getElementById('grid-and-buttons');
+	  var aside = document.querySelector('aside');
+	
+	  var grid = new _grid2.default(gridAndButtons, synth);
 	  var slider = document.getElementById("slider");
-	
-	  var keyButton = document.createElement('button');
-	  keyButton.innerHTML = "Melodic Minor";
-	  keyButton.addEventListener('click', function () {
-	    grid.changeKey("MEL_MINOR");
-	  });
-	  document.body.appendChild(keyButton);
-	
-	  var clearButton = document.createElement('button');
-	  clearButton.innerHTML = "Clear";
+	  var buttons = new _buttons2.default(grid);
+	  var clearButton = document.getElementById('clear');
 	  clearButton.addEventListener('click', function () {
 	    grid.clear();
 	  });
-	  document.body.appendChild(clearButton);
 	
 	  slider.addEventListener('change', function () {
 	    _Tone2.default.Transport.bpm.value = slider.value;
@@ -22045,9 +22044,9 @@
 	
 	var _key_constants = __webpack_require__(4);
 	
-	var Keys = _interopRequireWildcard(_key_constants);
+	var _key_constants2 = _interopRequireDefault(_key_constants);
 	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
@@ -22073,7 +22072,7 @@
 	        this.cells[i] = [];
 	        for (var j = 0; j < 16; j++) {
 	          var cellDiv = document.createElement("DIV");
-	          var cell = new Cell(Keys.MAJOR[i], this.synth, cellDiv);
+	          var cell = new Cell(_key_constants2.default["Major"][i], this.synth, cellDiv);
 	          cellDiv.cell = cell;
 	          this.cells[i][j] = cell;
 	          this.addListeners(cellDiv);
@@ -22111,7 +22110,7 @@
 	    value: function changeKey(key) {
 	      this.cells.forEach(function (row, idx) {
 	        return row.forEach(function (cell) {
-	          cell.note = Keys[key][idx];
+	          cell.note = _key_constants2.default[key][idx];
 	        });
 	      });
 	    }
@@ -22156,7 +22155,7 @@
 	  }, {
 	    key: "play",
 	    value: function play() {
-	      this.synth.triggerAttackRelease(this.note, '16n');
+	      this.synth.triggerAttackRelease(this.note, '8n');
 	    }
 	  }]);
 	
@@ -22172,25 +22171,74 @@
 	"use strict";
 	
 	Object.defineProperty(exports, "__esModule", {
-	                  value: true
+	            value: true
 	});
-	var MAJOR = exports.MAJOR = ["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5", "D5", "E5", "F5", "G5", "A5", "B5", "C6", "D6"].reverse();
+	var KEYS = {
+	            "Major": ["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5", "D5", "E5", "F5", "G5", "A5", "B5", "C6", "D6"].reverse(),
+	            "Harmonic Minor": ["C4", "D4", "Eb4", "F4", "G4", "Ab4", "B4", "C5", "D5", "Eb5", "F5", "G5", "Ab5", "B5", "C6", "D6"].reverse(),
+	            "Melodic Minor": ["C4", "D4", "Eb4", "F4", "G4", "A4", "B4", "C5", "D5", "Eb5", "F5", "G5", "A5", "B5", "C6", "D6"].reverse(),
+	            "Harmonic Major": ["C4", "D4", "E4", "F4", "G4", "Ab4", "B4", "C5", "D5", "E5", "F5", "G5", "Ab5", "B5", "C6", "D6"].reverse(),
+	            "Diminished": ["C4", "D4", "Eb4", "F4", "Gb4", "Ab4", "A4", "B4", "C5", "D5", "Eb5", "F5", "Gb5", "Ab5", "A5", "B5"].reverse(),
+	            "Major Pentatonic": ["C4", "D4", "E4", "G4", "A4", "C5", "D5", "E5", "G5", "A5", "C6", "D6", "E6", "G6", "A6", "C7"].reverse(),
+	            "Dorian Pentatonic": ["C4", "D4", "Eb4", "G4", "A4", "C5", "D5", "Eb5", "G5", "A5", "C6", "D6", "Eb6", "G6", "A6", "C7"].reverse(),
+	            "Lydian Pentatonic": ["C4", "E4", "F#4", "A4", "B4", "C5", "E5", "F#5", "A5", "B5", "C6", "E6", "F#6", "A6", "B6", "C7"].reverse(),
+	            "Whole Tone": ["C4", "D4", "E4", "F#4", "G#4", "A#4", "C5", "D5", "E5", "F#5", "G#5", "A#5", "C6", "D6", "E6", "F#6"].reverse()
+	};
 	
-	var HARM_MINOR = exports.HARM_MINOR = ["C4", "D4", "Eb4", "F4", "G4", "Ab4", "B4", "C5", "D5", "Eb5", "F5", "G5", "Ab5", "B5", "C6", "D6"].reverse();
+	exports.default = KEYS;
+
+/***/ },
+/* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
 	
-	var MEL_MINOR = exports.MEL_MINOR = ["C4", "D4", "Eb4", "F4", "G4", "A4", "B4", "C5", "D5", "Eb5", "F5", "G5", "A5", "B5", "C6", "D6"].reverse();
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
 	
-	var HARM_MAJOR = exports.HARM_MAJOR = ["C4", "D4", "E4", "F4", "G4", "Ab4", "B4", "C5", "D5", "E5", "F5", "G5", "Ab5", "B5", "C6", "D6"].reverse();
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var DIMINISHED = exports.DIMINISHED = ["C4", "D4", "Eb4", "F4", "Gb4", "Ab4", "A4", "B4", "C5", "D5", "Eb5", "F5", "Gb5", "Ab5", "A5", "B5"].reverse();
+	var _key_constants = __webpack_require__(4);
 	
-	var MAJ_PENT = exports.MAJ_PENT = ["C4", "D4", "E4", "G4", "A4", "C5", "D5", "E5", "G5", "A5", "C6", "D6", "E6", "G6", "A6", "C7"].reverse();
+	var _key_constants2 = _interopRequireDefault(_key_constants);
 	
-	var DORIAN_PENT = exports.DORIAN_PENT = ["C4", "D4", "Eb4", "G4", "A4", "C5", "D5", "Eb5", "G5", "A5", "C6", "D6", "Eb6", "G6", "A6", "C7"].reverse();
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var LYDIAN_PENT = exports.LYDIAN_PENT = ["C4", "E4", "F#4", "A4", "B4", "C5", "E5", "F#5", "A5", "B5", "C6", "E6", "F#6", "A6", "B6", "C7"].reverse();
-	//
-	// export const
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var Buttons = function () {
+	  function Buttons(grid) {
+	    _classCallCheck(this, Buttons);
+	
+	    this.element = document.createElement('div');
+	    this.element.id = 'buttons';
+	    this.grid = grid;
+	    this.makeButtons();
+	    var container = document.getElementById('grid-and-buttons');
+	    container.appendChild(this.element);
+	  }
+	
+	  _createClass(Buttons, [{
+	    key: 'makeButtons',
+	    value: function makeButtons() {
+	      var _this = this;
+	
+	      Object.keys(_key_constants2.default).forEach(function (key) {
+	        var keyButton = document.createElement('button');
+	        keyButton.innerHTML = key;
+	        keyButton.addEventListener('click', function () {
+	          _this.grid.changeKey(key);
+	        });
+	        _this.element.appendChild(keyButton);
+	      });
+	    }
+	  }]);
+	
+	  return Buttons;
+	}();
+	
+	exports.default = Buttons;
 
 /***/ }
 /******/ ]);

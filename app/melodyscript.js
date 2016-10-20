@@ -1,26 +1,22 @@
 import Grid from './grid.js';
 import Tone from 'Tone';
+import Buttons from './buttons.js';
 
 document.addEventListener("DOMContentLoaded", () => {
   const freeverb = new Tone.Freeverb(0.9).toMaster();
   const synth = new Tone.PolySynth(6).connect(freeverb);
   synth.volume.value = -10;
-  const grid = new Grid(document.body, synth);
+
+  const gridAndButtons = document.getElementById('grid-and-buttons');
+  const aside = document.querySelector('aside');
+
+  const grid = new Grid(gridAndButtons, synth);
   const slider = document.getElementById("slider");
-
-  const keyButton = document.createElement('button');
-  keyButton.innerHTML = "Melodic Minor";
-  keyButton.addEventListener('click', () => {
-    grid.changeKey("MEL_MINOR");
-  });
-  document.body.appendChild(keyButton);
-
-  const clearButton = document.createElement('button');
-  clearButton.innerHTML = "Clear";
+  const buttons = new Buttons(grid);
+  const clearButton = document.getElementById('clear');
   clearButton.addEventListener('click', () => {
     grid.clear();
   });
-  document.body.appendChild(clearButton);
 
   slider.addEventListener('change', () => {
     Tone.Transport.bpm.value = slider.value;

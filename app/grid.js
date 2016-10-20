@@ -1,5 +1,5 @@
 const Cell = require('./cell.js');
-import * as Keys from './key_constants.js';
+import KEYS from './key_constants.js';
 
 class Grid {
   constructor(container, synth) {
@@ -17,7 +17,7 @@ class Grid {
       this.cells[i] = [];
       for (var j = 0; j < 16; j++) {
         const cellDiv = document.createElement("DIV");
-        const cell = new Cell(Keys.MAJOR[i], this.synth, cellDiv);
+        const cell = new Cell(KEYS["Major"][i], this.synth, cellDiv);
         cellDiv.cell = cell;
         this.cells[i][j] = cell;
         this.addListeners(cellDiv);
@@ -50,7 +50,7 @@ class Grid {
   changeKey (key) {
     this.cells.forEach((row, idx) => {
       return row.forEach((cell) => {
-        cell.note = Keys[key][idx];
+        cell.note = KEYS[key][idx];
       });
     });
   }
