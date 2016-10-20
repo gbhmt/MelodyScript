@@ -56,10 +56,16 @@
 	
 	
 	document.addEventListener("DOMContentLoaded", function () {
-	  var freeverb = new _Tone2.default.Freeverb(0.8).toMaster();
+	  var freeverb = new _Tone2.default.Freeverb(0.9).toMaster();
 	  var synth = new _Tone2.default.PolySynth(6).connect(freeverb);
 	  var grid = new Grid(document.body, synth);
 	  var slider = document.getElementById("slider");
+	  var clearButton = document.createElement('button');
+	  clearButton.innerHTML = "Clear";
+	  clearButton.addEventListener('click', function () {
+	    grid.clear();
+	  });
+	  document.body.appendChild(clearButton);
 	
 	  slider.addEventListener('change', function () {
 	    _Tone2.default.Transport.bpm.value = slider.value;
@@ -22070,6 +22076,17 @@
 	      });
 	      cellDiv.addEventListener('click', function (e) {
 	        e.currentTarget.cell.toggleActive();
+	      });
+	    }
+	  }, {
+	    key: "clear",
+	    value: function clear() {
+	      debugger;
+	      this.cells.forEach(function (row) {
+	        return row.forEach(function (cell) {
+	          cell.active = false;
+	          cell.container.className = "cell";
+	        });
 	      });
 	    }
 	  }]);

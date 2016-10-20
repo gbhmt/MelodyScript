@@ -41,6 +41,16 @@ class Grid {
       e.currentTarget.cell.toggleActive();
     });
   }
+
+  clear () {
+    debugger
+    this.cells.forEach((row) => {
+      return row.forEach((cell) => {
+        cell.active = false;
+        cell.container.className = "cell";
+      });
+    });
+  }
 }
 
 module.exports = Grid;

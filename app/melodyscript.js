@@ -2,10 +2,16 @@ const Grid = require('./grid.js');
 import Tone from 'Tone';
 
 document.addEventListener("DOMContentLoaded", () => {
-  const freeverb = new Tone.Freeverb(0.8).toMaster();
+  const freeverb = new Tone.Freeverb(0.9).toMaster();
   const synth = new Tone.PolySynth(6).connect(freeverb);
   const grid = new Grid(document.body, synth);
   const slider = document.getElementById("slider");
+  const clearButton = document.createElement('button');
+  clearButton.innerHTML = "Clear";
+  clearButton.addEventListener('click', () => {
+    grid.clear();
+  });
+  document.body.appendChild(clearButton);
 
   slider.addEventListener('change', () => {
     Tone.Transport.bpm.value = slider.value;
