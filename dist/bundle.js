@@ -59,6 +59,12 @@
 	  var freeverb = new _Tone2.default.Freeverb(0.8).toMaster();
 	  var synth = new _Tone2.default.PolySynth(6).connect(freeverb);
 	  var grid = new Grid(document.body, synth);
+	  var slider = document.getElementById("slider");
+	
+	  slider.addEventListener('change', function () {
+	    _Tone2.default.Transport.bpm.value = slider.value;
+	  });
+	
 	  document.body.addEventListener('mousedown', function (e) {
 	    grid.mousedown = true;
 	  });
@@ -82,6 +88,7 @@
 	  }, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], "8n");
 	
 	  _Tone2.default.Transport.start();
+	  _Tone2.default.Transport.bpm.value = 130;
 	  loop.start();
 	});
 
