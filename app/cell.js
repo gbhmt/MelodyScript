@@ -16,6 +16,18 @@ class Cell {
     }
   }
 
+  addHighlight () {
+    this.container.className += " highlight";
+  }
+
+  removeHighlight () {
+    if (this.container.className === "cell highlight") {
+      this.container.className = "cell";
+    } else if (this.container.className === "cell active highlight") {
+      this.container.className = "cell active";
+    }
+  }
+
   play () {
     this.synth.triggerAttackRelease(this.note, '8n');
   }

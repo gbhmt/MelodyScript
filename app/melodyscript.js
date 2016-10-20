@@ -8,8 +8,6 @@ document.addEventListener("DOMContentLoaded", () => {
   synth.volume.value = -10;
 
   const gridAndButtons = document.getElementById('grid-and-buttons');
-  const aside = document.querySelector('aside');
-
   const grid = new Grid(gridAndButtons, synth);
   const slider = document.getElementById("slider");
   const buttons = new Buttons(grid);
@@ -36,10 +34,18 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   const loop = new Tone.Sequence((time, col) => {
-    const column = columns[col];
     for (var i = 0; i < 16; i++) {
-      if (column[i].active) {
-        column[i].play();
+      const currentColumn = columns[col];
+      let prevColumn;
+      if (col === 0) {
+        prevColumn = columns[15];
+      } else {
+        prevColumn = columns[col - 1];
+      }
+      currentColumn[i].addHighlight();
+      prevColumn[i].removeHighlight();
+      if (currentColumn[i].active) {
+        currentColumn[i].play();
       }
     }
   }, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], "8n");
