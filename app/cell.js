@@ -1,16 +1,23 @@
 class Cell {
-  constructor(note, synth) {
+  constructor(note, synth, container) {
     this.note = note;
     this.synth = synth;
     this.active = false;
+    this.container = container;
   }
 
   toggleActive () {
-    this.active = !this.active;
+    if (this.active) {
+      this.active = false;
+      this.container.className = "cell";
+    } else {
+      this.active = true;
+      this.container.className = "cell active";
+    }
   }
 
   play () {
-    this.synth.triggerAttackRelease(this.note, .5);
+    this.synth.triggerAttackRelease(this.note, '32n');
   }
 }
 

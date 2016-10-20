@@ -10,19 +10,19 @@ class Grid {
     this.element = document.createElement("DIV");
     this.element.id = "grid";
     container.appendChild(this.element);
-    this.grid = new Array(16);
+    this.cells = new Array(16);
     this.synth = synth;
     this.createGrid();
   }
 
   createGrid () {
     for (var i = 0; i < 16; i++) {
-      this.grid[i] = [];
+      this.cells[i] = [];
       for (var j = 0; j < 16; j++) {
         const cellDiv = document.createElement("DIV");
-        const cell = new Cell(NOTES[i], this.synth);
+        const cell = new Cell(NOTES[i], this.synth, cellDiv);
         cellDiv.cell = cell;
-        this.grid[i][j] = cell;
+        this.cells[i][j] = cell;
         this.addListener(cellDiv);
         cellDiv.className = "cell";
         this.element.appendChild(cellDiv);
@@ -32,7 +32,7 @@ class Grid {
 
   addListener (cellDiv) {
     cellDiv.addEventListener('mousedown', (e) => {
-      e.currentTarget.cell.play();
+      e.currentTarget.cell.toggleActive();
     });
   }
 }

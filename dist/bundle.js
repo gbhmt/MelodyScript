@@ -46,7 +46,7 @@
 
 	'use strict';
 	
-	var _Tone = __webpack_require__(4);
+	var _Tone = __webpack_require__(1);
 	
 	var _Tone2 = _interopRequireDefault(_Tone);
 	
@@ -56,105 +56,31 @@
 	
 	
 	document.addEventListener("DOMContentLoaded", function () {
-	  var synth = new _Tone2.default.Synth().toMaster();
+	  var freeverb = new _Tone2.default.Freeverb(.8).toMaster();
+	  var synth = new _Tone2.default.PolySynth(6).connect(freeverb);
 	  var grid = new Grid(document.body, synth);
+	
+	  var columns = grid.cells[0].map(function (col, idx) {
+	    return grid.cells.map(function (row) {
+	      return row[idx];
+	    });
+	  });
+	
+	  var loop = new _Tone2.default.Sequence(function (time, col) {
+	    var column = columns[col];
+	    for (var i = 0; i < 16; i++) {
+	      if (column[i].active) {
+	        column[i].play();
+	      }
+	    }
+	  }, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], "8n");
+	
+	  _Tone2.default.Transport.start();
+	  loop.start();
 	});
 
 /***/ },
-/* 1 */,
-/* 2 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	var Cell = __webpack_require__(3);
-	
-	var NOTES = ["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5", "D5", "E5", "F5", "G5", "A5", "B5", "C6", "D6"].reverse();
-	
-	var Grid = function () {
-	  function Grid(container, synth) {
-	    _classCallCheck(this, Grid);
-	
-	    this.element = document.createElement("DIV");
-	    this.element.id = "grid";
-	    container.appendChild(this.element);
-	    this.grid = new Array(16);
-	    this.synth = synth;
-	    this.createGrid();
-	  }
-	
-	  _createClass(Grid, [{
-	    key: "createGrid",
-	    value: function createGrid() {
-	      for (var i = 0; i < 16; i++) {
-	        this.grid[i] = [];
-	        for (var j = 0; j < 16; j++) {
-	          var cellDiv = document.createElement("DIV");
-	          var cell = new Cell(NOTES[i], this.synth);
-	          cellDiv.cell = cell;
-	          this.grid[i][j] = cell;
-	          this.addListener(cellDiv);
-	          cellDiv.className = "cell";
-	          this.element.appendChild(cellDiv);
-	        }
-	      }
-	    }
-	  }, {
-	    key: "addListener",
-	    value: function addListener(cellDiv) {
-	      cellDiv.addEventListener('mousedown', function (e) {
-	        e.currentTarget.cell.play();
-	      });
-	    }
-	  }]);
-	
-	  return Grid;
-	}();
-	
-	module.exports = Grid;
-
-/***/ },
-/* 3 */
-/***/ function(module, exports) {
-
-	"use strict";
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	var Cell = function () {
-	  function Cell(note, synth) {
-	    _classCallCheck(this, Cell);
-	
-	    this.note = note;
-	    this.synth = synth;
-	    this.active = false;
-	  }
-	
-	  _createClass(Cell, [{
-	    key: "toggleActive",
-	    value: function toggleActive() {
-	      this.active = !this.active;
-	    }
-	  }, {
-	    key: "play",
-	    value: function play() {
-	      this.synth.triggerAttackRelease(this.note, .5);
-	    }
-	  }]);
-	
-	  return Cell;
-	}();
-	
-	module.exports = Cell;
-
-/***/ },
-/* 4 */
+/* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;(function(root, factory){
@@ -22075,6 +22001,105 @@
 		
 		return Tone;
 	}));
+
+/***/ },
+/* 2 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var Cell = __webpack_require__(3);
+	
+	var NOTES = ["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5", "D5", "E5", "F5", "G5", "A5", "B5", "C6", "D6"].reverse();
+	
+	var Grid = function () {
+	  function Grid(container, synth) {
+	    _classCallCheck(this, Grid);
+	
+	    this.element = document.createElement("DIV");
+	    this.element.id = "grid";
+	    container.appendChild(this.element);
+	    this.cells = new Array(16);
+	    this.synth = synth;
+	    this.createGrid();
+	  }
+	
+	  _createClass(Grid, [{
+	    key: "createGrid",
+	    value: function createGrid() {
+	      for (var i = 0; i < 16; i++) {
+	        this.cells[i] = [];
+	        for (var j = 0; j < 16; j++) {
+	          var cellDiv = document.createElement("DIV");
+	          var cell = new Cell(NOTES[i], this.synth, cellDiv);
+	          cellDiv.cell = cell;
+	          this.cells[i][j] = cell;
+	          this.addListener(cellDiv);
+	          cellDiv.className = "cell";
+	          this.element.appendChild(cellDiv);
+	        }
+	      }
+	    }
+	  }, {
+	    key: "addListener",
+	    value: function addListener(cellDiv) {
+	      cellDiv.addEventListener('mousedown', function (e) {
+	        e.currentTarget.cell.toggleActive();
+	      });
+	    }
+	  }]);
+	
+	  return Grid;
+	}();
+	
+	module.exports = Grid;
+
+/***/ },
+/* 3 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var Cell = function () {
+	  function Cell(note, synth, container) {
+	    _classCallCheck(this, Cell);
+	
+	    this.note = note;
+	    this.synth = synth;
+	    this.active = false;
+	    this.container = container;
+	  }
+	
+	  _createClass(Cell, [{
+	    key: "toggleActive",
+	    value: function toggleActive() {
+	      if (this.active) {
+	        this.active = false;
+	        this.container.className = "cell";
+	      } else {
+	        this.active = true;
+	        this.container.className = "cell active";
+	      }
+	    }
+	  }, {
+	    key: "play",
+	    value: function play() {
+	      this.synth.triggerAttackRelease(this.note, '32n');
+	    }
+	  }]);
+	
+	  return Cell;
+	}();
+	
+	module.exports = Cell;
 
 /***/ }
 /******/ ]);
