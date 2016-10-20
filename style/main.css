@@ -1,0 +1,17 @@
+#grid {
+  margin: 0 auto;
+  width: 850px;
+  height: 400px;
+}
+
+ul {
+  list-style: none;
+}
+
+.cell {
+  width: 40px;
+  height: 40px;
+  margin: 5px;
+  border: 1px solid black;
+  display: inline-block;
+}

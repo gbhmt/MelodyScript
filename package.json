@@ -1,0 +1,27 @@
+{
+  "name": "MelodyScript",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gbhmt/MelodyScript.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gbhmt/MelodyScript/issues"
+  },
+  "homepage": "https://github.com/gbhmt/MelodyScript#readme",
+  "dependencies": {
+    "babel-core": "^6.17.0",
+    "babel-loader": "^6.2.5",
+    "babel-preset-es2015": "^6.16.0",
+    "tone": "^0.8.0",
+    "webpack": "^1.13.2"
+  }
+}
