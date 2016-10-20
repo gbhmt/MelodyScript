@@ -17,7 +17,7 @@ class Cell {
   }
 
   play () {
-    this.synth.triggerAttackRelease(this.note, '32n');
+    this.synth.triggerAttackRelease(this.note, '16n');
   }
 }
 

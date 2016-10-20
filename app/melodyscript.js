@@ -2,9 +2,15 @@ const Grid = require('./grid.js');
 import Tone from 'Tone';
 
 document.addEventListener("DOMContentLoaded", () => {
-  const freeverb = new Tone.Freeverb(.8).toMaster();
+  const freeverb = new Tone.Freeverb(0.8).toMaster();
   const synth = new Tone.PolySynth(6).connect(freeverb);
   const grid = new Grid(document.body, synth);
+  document.body.addEventListener('mousedown', (e) => {
+    grid.mousedown = true;
+  });
+  document.body.addEventListener('mouseup', (e) => {
+    grid.mousedown = false;
+  });
 
   const columns = grid.cells[0].map((col, idx) => {
     return grid.cells.map((row) => {

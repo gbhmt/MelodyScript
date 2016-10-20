@@ -13,6 +13,7 @@ class Grid {
     this.cells = new Array(16);
     this.synth = synth;
     this.createGrid();
+    this.mousedown = false;
   }
 
   createGrid () {
@@ -31,7 +32,12 @@ class Grid {
   }
 
   addListener (cellDiv) {
-    cellDiv.addEventListener('mousedown', (e) => {
+    cellDiv.addEventListener('mouseenter', (e) => {
+      if (this.mousedown) {
+        e.currentTarget.cell.toggleActive();
+      }
+    });
+    cellDiv.addEventListener('click', (e) => {
       e.currentTarget.cell.toggleActive();
     });
   }

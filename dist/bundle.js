@@ -56,9 +56,15 @@
 	
 	
 	document.addEventListener("DOMContentLoaded", function () {
-	  var freeverb = new _Tone2.default.Freeverb(.8).toMaster();
+	  var freeverb = new _Tone2.default.Freeverb(0.8).toMaster();
 	  var synth = new _Tone2.default.PolySynth(6).connect(freeverb);
 	  var grid = new Grid(document.body, synth);
+	  document.body.addEventListener('mousedown', function (e) {
+	    grid.mousedown = true;
+	  });
+	  document.body.addEventListener('mouseup', function (e) {
+	    grid.mousedown = false;
+	  });
 	
 	  var columns = grid.cells[0].map(function (col, idx) {
 	    return grid.cells.map(function (row) {
@@ -22026,6 +22032,7 @@
 	    this.cells = new Array(16);
 	    this.synth = synth;
 	    this.createGrid();
+	    this.mousedown = false;
 	  }
 	
 	  _createClass(Grid, [{
@@ -22047,7 +22054,14 @@
 	  }, {
 	    key: "addListener",
 	    value: function addListener(cellDiv) {
-	      cellDiv.addEventListener('mousedown', function (e) {
+	      var _this = this;
+	
+	      cellDiv.addEventListener('mouseenter', function (e) {
+	        if (_this.mousedown) {
+	          e.currentTarget.cell.toggleActive();
+	        }
+	      });
+	      cellDiv.addEventListener('click', function (e) {
 	        e.currentTarget.cell.toggleActive();
 	      });
 	    }
@@ -22092,7 +22106,7 @@
 	  }, {
 	    key: "play",
 	    value: function play() {
-	      this.synth.triggerAttackRelease(this.note, '32n');
+	      this.synth.triggerAttackRelease(this.note, '16n');
 	    }
 	  }]);
 	
