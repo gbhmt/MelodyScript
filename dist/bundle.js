@@ -22247,11 +22247,22 @@
 	      Object.keys(_key_constants2.default).forEach(function (key) {
 	        var keyButton = document.createElement('button');
 	        keyButton.innerHTML = key;
-	        keyButton.addEventListener('click', function () {
+	        keyButton.addEventListener('click', function (e) {
 	          _this.grid.changeKey(key);
+	          _this.select(e.currentTarget);
 	        });
 	        _this.element.appendChild(keyButton);
 	      });
+	      Array.from(this.element.children)[0].className = "button selected";
+	    }
+	  }, {
+	    key: 'select',
+	    value: function select(target) {
+	      var buttons = Array.from(this.element.children);
+	      buttons.forEach(function (button) {
+	        button.className = "button";
+	      });
+	      target.className = "button selected";
 	    }
 	  }]);
 	
