@@ -68,10 +68,26 @@
 	  var gridAndButtons = document.getElementById('grid-and-buttons');
 	  var grid = new _grid2.default(gridAndButtons, synth);
 	  var slider = document.getElementById("slider");
+	
 	  var buttons = new _buttons2.default(grid);
 	  var clearButton = document.getElementById('clear');
 	  clearButton.addEventListener('click', function () {
 	    grid.clear();
+	  });
+	
+	  var modal = document.getElementById("modal");
+	  var modalOverlay = document.getElementById("modal-overlay");
+	  var closeButton = document.getElementById("close-button");
+	  var openButton = document.getElementById("open-button");
+	
+	  closeButton.addEventListener("click", function () {
+	    modal.className = "closed";
+	    modalOverlay.className = "closed";
+	  });
+	
+	  openButton.addEventListener("click", function () {
+	    modal.className = "";
+	    modalOverlay.className = "";
 	  });
 	
 	  slider.addEventListener('change', function () {

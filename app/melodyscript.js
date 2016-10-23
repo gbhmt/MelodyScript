@@ -10,10 +10,26 @@ document.addEventListener("DOMContentLoaded", () => {
   const gridAndButtons = document.getElementById('grid-and-buttons');
   const grid = new Grid(gridAndButtons, synth);
   const slider = document.getElementById("slider");
+
   const buttons = new Buttons(grid);
   const clearButton = document.getElementById('clear');
   clearButton.addEventListener('click', () => {
     grid.clear();
+  });
+
+  const modal = document.getElementById("modal");
+  const modalOverlay = document.getElementById("modal-overlay");
+  const closeButton = document.getElementById("close-button");
+  const openButton = document.getElementById("open-button");
+
+  closeButton.addEventListener("click", () => {
+    modal.className = "closed";
+    modalOverlay.className = "closed";
+  });
+
+  openButton.addEventListener("click", () => {
+    modal.className = "";
+    modalOverlay.className = "";
   });
 
   slider.addEventListener('change', () => {

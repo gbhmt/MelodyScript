@@ -15,6 +15,30 @@
     <div id="clear-and-slider">
       <input id="slider" type="range" min=60 max=200 value=130 step=1>
       <button id="clear">Clear</button>
+      <button id="open-button">?</button>
     </div>
+    <div id="modal" class="closed">
+      <div id="modal-content">
+        <h1>melodyscript</h1>
+        <p>MelodyScript is an interactive game that allows you to activate
+          cells representing musical notes to be played back.</p>
+        <h3>Instructions</h3>
+        <p>Click or drag on the grid to activate notes</p>
+        <p>Use the buttons on the right side to choose a tonality</p>
+        <p>Adjust the slider at the bottom to change the tempo of playback</p>
+        <p>Click the clear button to reset the grid</p>
+        <button id="close-button">X</button>
+        <a href="https://github.com/gbhmt/MelodyScript" target="_blank">
+          <img class="githublogo" src="./style/images/githublogo.png"/>
+        </a>
+        <a href="https://www.linkedin.com/in/taylor-herron-42a33912a" target="_blank">
+          <img src="./style/images/linkedinlogo.png"/>
+        </a>
+        <a href="http://www.taylor-herron.com/" target="_blank">
+          <img src="./style/images/folder-icon.png"/>
+        </a>
+      </div>
+    </div>
+    <div id="modal-overlay" class="closed"></div>
   </body>
 </html>
