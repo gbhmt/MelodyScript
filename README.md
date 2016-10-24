@@ -19,6 +19,17 @@ All DOM manipulation in MelodyScript is accomplished with vanilla JavaScript. Up
 `/app/grid.js`
 
 ```JS
+class Grid {
+  constructor(container, synth) {
+    this.element = document.createElement("DIV");
+    this.element.id = "grid";
+    container.appendChild(this.element);
+    this.cells = new Array(16);
+    this.synth = synth;
+    this.createGrid();
+    this.mousedown = false;
+  }
+
   createGrid () {
     for (var i = 0; i < 16; i++) {
       this.cells[i] = [];
@@ -33,7 +44,14 @@ All DOM manipulation in MelodyScript is accomplished with vanilla JavaScript. Up
       }
     }
   }
+  ...
+}
   
+```
+`/app/melodyscript.js`
+```JS
+const gridAndButtons = document.getElementById('grid-and-buttons');
+  const grid = new Grid(gridAndButtons, synth);
 ```
 
 The musical notes are contained in the `cell` object, which is attached to each cell in the DOM and is set to inactive as default. Each cell has a `play` method, as well as a `toggleActive` method that toggles a class to be read by the sequencer to determine whether or not to play the note on each pass.
