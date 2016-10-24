@@ -1,50 +1,131 @@
 # MelodyScript
 
+![screenshot](https://github.com/gbhmt/MelodyScript/blob/master/melody-script-readme-screenshot.jpg)
 
-### Background
+[MelodyScript](http://www.taylor-herron.com/MelodyScript/) is an interactive step sequencer in the browser that allows you to highlight cells to create melodies. 
 
-MelodyScript is an interactive game that allows users to activate cells representing musical notes to be played by the program. The user can add notes to columns on the screen, which will be played in time from left to right in a loop. The speed of playback can be controlled by a slider, and playback can be toggled by the user. [Live](http://www.taylor-herron.com/MelodyScript/)
+### Instructions
+* Click or drag to highlight cells on the grid
+* Click on the buttons on the right side to change the tonality of the notes on the grid
+* Use the slider at the bottom to adjust the tempo of playback
+* Click the clear button at the bottom to reset the grid
+
+### Implementation
+
+#### DOM manipulation
+
+All DOM manipulation in MelodyScript is accomplished with vanilla JavaScript. Upon loading the DOM, a 16x16 grid of cells with references to musical notes is added to the DOM. 
+
+`/app/grid.js`
+
+```JS
+  createGrid () {
+    for (var i = 0; i < 16; i++) {
+      this.cells[i] = [];
+      for (var j = 0; j < 16; j++) {
+        const cellDiv = document.createElement("DIV");
+        const cell = new Cell(KEYS["Major"][i], this.synth, cellDiv);
+        cellDiv.cell = cell;
+        this.cells[i][j] = cell;
+        this.addListeners(cellDiv);
+        cellDiv.className = "cell";
+        this.element.appendChild(cellDiv);
+      }
+    }
+  }
+  
+```
+
+The musical notes are contained in the `cell` object, which is attached to each cell in the DOM and is set to inactive as default. Each cell has a `play` method, as well as a `toggleActive` method that toggles a class to be read by the sequencer to determine whether or not to play the note on each pass.
+
+`/app/cell.js`
+
+```JS
+toggleActive () {
+    if (this.active) {
+      this.active = false;
+      this.container.className = "cell";
+    } else {
+      this.active = true;
+      this.container.className = "cell active";
+    }
+  }
+
+play () {
+    this.synth.triggerAttackRelease(this.note, '8n');
+  }
+  
+```
 
 
-### MVP
+#### Creating pitches
+MelodyScript utilizes the [Tone.js](https://github.com/Tonejs/Tone.js) WebAudio framework for producing pitches and handling the sequencing. After the DOM has been initially loaded, a global `Synth` object is created to play the notes referenced by the cells.
 
-Once completed, users should be able to:
+`/app/melodyscript.js`
 
-* Add notes to display
-* Toggle playback
-* Reset grid
-* Adjust playback speed with slider
-* View sleep visual representation of playback
+```JS
+const freeverb = new Tone.Freeverb(0.9).toMaster();
+  const synth = new Tone.PolySynth(6).connect(freeverb);
+  synth.volume.value = -10;
+```
 
-In addition, this project will include:
+The execution of the activated pitches is handled by a `Sequence`, a feature of the Tone.js library that allows you to execute a callback for every step in the sequence. It acts similarly to setInterval, with the major differences being that it the second argument allows you to enter an array of steps in the sequence that can be referenced as a second argument in the callback, and the third argument, rather than being an interval in ms, is represented by a musical subdivision of time (measures, beats, fractions of beats, etc.). At each step of the sequence, the current column is highlighted visually and each cell in the column is checked to see if it's active. If it is active, the cell's `play()` method is called, and the pitch is played. The `Sequence` is handled by the `Transport`, the global timekeeper provided by the Tone.js library. The slider on the bottom of the page is configured to change the tempo of playback by setting the `bpm` property of the `Transport` object.
 
-* A production README
-* An about section with links to github repo and portfolio site
+```JS
+const loop = new Tone.Sequence((time, col) => {
+    for (var i = 0; i < 16; i++) {
+      const currentColumn = columns[col];
+      let prevColumn;
+      if (col === 0) {
+        prevColumn = columns[15];
+      } else {
+        prevColumn = columns[col - 1];
+      }
+      currentColumn[i].addHighlight();
+      prevColumn[i].removeHighlight();
+      if (currentColumn[i].active) {
+        currentColumn[i].play();
+      }
+    }
+  }, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], "8n");
+  
+  Tone.Transport.start();
+  Tone.Transport.bpm.value = 130;
+  loop.start();
+```
+#### Multiple tonalities
 
+The buttons for toggling different tonalities are keys in the `KEYS` object that point to arrays of pitches corresponding to that tonality. 
 
-### Architecture and Technologies
+`/app/key_constants.js`
 
-This project will be implemented with the following technologies: 
+```JS
+  "Major": ["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5",
+          "D5", "E5", "F5", "G5", "A5", "B5", "C6", "D6"].reverse(),
+  "Harmonic Minor": ["C4", "D4", "Eb4", "F4", "G4", "Ab4", "B4", "C5",
+                "D5", "Eb5", "F5", "G5", "Ab5", "B5", "C6", "D6"].reverse(),
+  "Melodic Minor": ["C4", "D4", "Eb4", "F4", "G4", "A4", "B4", "C5",
+              "D5", "Eb5", "F5", "G5", "A5", "B5", "C6", "D6"].reverse(),
+  "Harmonic Major": ["C4", "D4", "E4", "F4", "G4", "Ab4", "B4", "C5",
+              "D5", "E5", "F5", "G5", "Ab5", "B5", "C6", "D6"].reverse()
+  .....
+```
 
-* Vanilla JS and jQuery for DOM manipulation
-* Tone.js Web Audio framework for producing musical notes
-* Webpack to bundle javascript files
+The buttons are dynamically to the DOM by looping through the `KEYS` object upon loading the DOM and creating a button to toggle that key, which is accomplished by reassigning the musical notes to the cells on the grid in real time. This makes adding additional buttons for tonalities as simple as adding another key value pair to the `KEYS` object.
 
-Additional scripts:
+`/app/grid.js`
 
-`grid.js`: main component of the display, holds `Cell`s that play the tones
+```JS
+changeKey (key) {
+    this.cells.forEach((row, idx) => {
+      return row.forEach((cell) => {
+        cell.note = KEYS[key][idx];
+      });
+    });
+  }
+```
 
-`cell.js`: subcomponents of the `grid`, internal state keeps track of whether or not it's activated
+### Future improvements
+* Add option for user to enter grid size
+* Allow for recording of playback
 
-### Wireframe
-
-![wireframe](https://soundscape.mybalsamiq.com/mockups/5083418.png?key=ccde912f08f213435a62ec90ce7d4cf2d78eebcc)
-
-
-### Implementation Timeline
-
-**Day 1**: Set up skeleton for project- `package.json`, `webpack.config.js`, and each script to be included in the project. Get acclimated with the Tone.js framework. Get webpack successfully bundling. Get some notes playing with Tone.js. Start working on the `Cell` class.
-
-**Day 2**: Finish `Cell` class. Connect with `Board`. Add ability to toggle cells on and off. Start implementing left-to-right sequencing with variable speeds. Implement grid reset button.
-
-**Day 3**: Lots of CSS styling. Implement tempo slider. Add links and instructions modal.
