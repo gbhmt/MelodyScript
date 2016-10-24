@@ -3,7 +3,7 @@
 
 ### Background
 
-MelodyScript is an interactive game that allows users to activate cells representing musical notes to be played by the program. The user can add notes to columns on the screen, which will be played in time from left to right in a loop. The speed of playback can be controlled by a slider, and playback can be toggled by the user. 
+MelodyScript is an interactive game that allows users to activate cells representing musical notes to be played by the program. The user can add notes to columns on the screen, which will be played in time from left to right in a loop. The speed of playback can be controlled by a slider, and playback can be toggled by the user. [Live](http://www.taylor-herron.com/MelodyScript/)
 
 
 ### MVP
