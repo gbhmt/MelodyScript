@@ -22,6 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeButton = document.getElementById("close-button");
   const openButton = document.getElementById("open-button");
 
+
   closeButton.addEventListener("click", () => {
     modal.className = "closed";
     modalOverlay.className = "closed";

@@ -46,11 +46,11 @@
 
 	'use strict';
 	
-	var _grid = __webpack_require__(2);
+	var _grid = __webpack_require__(1);
 	
 	var _grid2 = _interopRequireDefault(_grid);
 	
-	var _Tone = __webpack_require__(1);
+	var _Tone = __webpack_require__(4);
 	
 	var _Tone2 = _interopRequireDefault(_Tone);
 	
@@ -131,6 +131,177 @@
 
 /***/ },
 /* 1 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _key_constants = __webpack_require__(2);
+	
+	var _key_constants2 = _interopRequireDefault(_key_constants);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var Cell = __webpack_require__(3);
+	
+	var Grid = function () {
+	  function Grid(container, synth) {
+	    _classCallCheck(this, Grid);
+	
+	    this.element = document.createElement("DIV");
+	    this.element.id = "grid";
+	    container.appendChild(this.element);
+	    this.cells = new Array(16);
+	    this.synth = synth;
+	    this.createGrid();
+	    this.mousedown = false;
+	  }
+	
+	  _createClass(Grid, [{
+	    key: 'createGrid',
+	    value: function createGrid() {
+	      for (var i = 0; i < 16; i++) {
+	        this.cells[i] = [];
+	        for (var j = 0; j < 16; j++) {
+	          var cellDiv = document.createElement("DIV");
+	          var cell = new Cell(_key_constants2.default["Major"][i], this.synth, cellDiv);
+	          cellDiv.cell = cell;
+	          this.cells[i][j] = cell;
+	          this.addListeners(cellDiv);
+	          cellDiv.className = "cell";
+	          this.element.appendChild(cellDiv);
+	        }
+	      }
+	    }
+	  }, {
+	    key: 'addListeners',
+	    value: function addListeners(cellDiv) {
+	      var _this = this;
+	
+	      cellDiv.addEventListener('mouseenter', function (e) {
+	        if (_this.mousedown) {
+	          e.currentTarget.cell.toggleActive();
+	        }
+	      });
+	      cellDiv.addEventListener('click', function (e) {
+	        e.currentTarget.cell.toggleActive();
+	      });
+	    }
+	  }, {
+	    key: 'clear',
+	    value: function clear() {
+	      this.cells.forEach(function (row) {
+	        return row.forEach(function (cell) {
+	          cell.active = false;
+	          cell.container.className = "cell";
+	        });
+	      });
+	    }
+	  }, {
+	    key: 'changeKey',
+	    value: function changeKey(key) {
+	      this.cells.forEach(function (row, idx) {
+	        return row.forEach(function (cell) {
+	          cell.note = _key_constants2.default[key][idx];
+	        });
+	      });
+	    }
+	  }]);
+	
+	  return Grid;
+	}();
+	
+	exports.default = Grid;
+
+/***/ },
+/* 2 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	            value: true
+	});
+	var KEYS = {
+	            "Major": ["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5", "D5", "E5", "F5", "G5", "A5", "B5", "C6", "D6"].reverse(),
+	            "Harmonic Minor": ["C4", "D4", "Eb4", "F4", "G4", "Ab4", "B4", "C5", "D5", "Eb5", "F5", "G5", "Ab5", "B5", "C6", "D6"].reverse(),
+	            "Melodic Minor": ["C4", "D4", "Eb4", "F4", "G4", "A4", "B4", "C5", "D5", "Eb5", "F5", "G5", "A5", "B5", "C6", "D6"].reverse(),
+	            "Harmonic Major": ["C4", "D4", "E4", "F4", "G4", "Ab4", "B4", "C5", "D5", "E5", "F5", "G5", "Ab5", "B5", "C6", "D6"].reverse(),
+	            "Diminished": ["C4", "D4", "Eb4", "F4", "Gb4", "Ab4", "A4", "B4", "C5", "D5", "Eb5", "F5", "Gb5", "Ab5", "A5", "B5"].reverse(),
+	            "Major Pentatonic": ["C4", "D4", "E4", "G4", "A4", "C5", "D5", "E5", "G5", "A5", "C6", "D6", "E6", "G6", "A6", "C7"].reverse(),
+	            "Lydian Pentatonic": ["C4", "E4", "F#4", "A4", "B4", "C5", "E5", "F#5", "A5", "B5", "C6", "E6", "F#6", "A6", "B6", "C7"].reverse(),
+	            "Whole Tone": ["C4", "D4", "E4", "F#4", "G#4", "A#4", "C5", "D5", "E5", "F#5", "G#5", "A#5", "C6", "D6", "E6", "F#6"].reverse(),
+	            "Chromatic": ["C4", "C#4", "D4", "D#4", "E4", "F4", "F#4", "G4", "G#4", "A4", "A#4", "B4", "C5", "C#5", "D5", "D#5"].reverse()
+	};
+	
+	exports.default = KEYS;
+
+/***/ },
+/* 3 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var Cell = function () {
+	  function Cell(note, synth, container) {
+	    _classCallCheck(this, Cell);
+	
+	    this.note = note;
+	    this.synth = synth;
+	    this.active = false;
+	    this.container = container;
+	  }
+	
+	  _createClass(Cell, [{
+	    key: "toggleActive",
+	    value: function toggleActive() {
+	      if (this.active) {
+	        this.active = false;
+	        this.container.className = "cell";
+	      } else {
+	        this.active = true;
+	        this.container.className = "cell active";
+	      }
+	    }
+	  }, {
+	    key: "addHighlight",
+	    value: function addHighlight() {
+	      this.container.className += " highlight";
+	    }
+	  }, {
+	    key: "removeHighlight",
+	    value: function removeHighlight() {
+	      if (this.container.className === "cell highlight") {
+	        this.container.className = "cell";
+	      } else if (this.container.className === "cell active highlight") {
+	        this.container.className = "cell active";
+	      }
+	    }
+	  }, {
+	    key: "play",
+	    value: function play() {
+	      this.synth.triggerAttackRelease(this.note, '8n');
+	    }
+	  }]);
+	
+	  return Cell;
+	}();
+	
+	module.exports = Cell;
+
+/***/ },
+/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;(function(root, factory){
@@ -22053,177 +22224,6 @@
 	}));
 
 /***/ },
-/* 2 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _key_constants = __webpack_require__(4);
-	
-	var _key_constants2 = _interopRequireDefault(_key_constants);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	var Cell = __webpack_require__(3);
-	
-	var Grid = function () {
-	  function Grid(container, synth) {
-	    _classCallCheck(this, Grid);
-	
-	    this.element = document.createElement("DIV");
-	    this.element.id = "grid";
-	    container.appendChild(this.element);
-	    this.cells = new Array(16);
-	    this.synth = synth;
-	    this.createGrid();
-	    this.mousedown = false;
-	  }
-	
-	  _createClass(Grid, [{
-	    key: 'createGrid',
-	    value: function createGrid() {
-	      for (var i = 0; i < 16; i++) {
-	        this.cells[i] = [];
-	        for (var j = 0; j < 16; j++) {
-	          var cellDiv = document.createElement("DIV");
-	          var cell = new Cell(_key_constants2.default["Major"][i], this.synth, cellDiv);
-	          cellDiv.cell = cell;
-	          this.cells[i][j] = cell;
-	          this.addListeners(cellDiv);
-	          cellDiv.className = "cell";
-	          this.element.appendChild(cellDiv);
-	        }
-	      }
-	    }
-	  }, {
-	    key: 'addListeners',
-	    value: function addListeners(cellDiv) {
-	      var _this = this;
-	
-	      cellDiv.addEventListener('mouseenter', function (e) {
-	        if (_this.mousedown) {
-	          e.currentTarget.cell.toggleActive();
-	        }
-	      });
-	      cellDiv.addEventListener('click', function (e) {
-	        e.currentTarget.cell.toggleActive();
-	      });
-	    }
-	  }, {
-	    key: 'clear',
-	    value: function clear() {
-	      this.cells.forEach(function (row) {
-	        return row.forEach(function (cell) {
-	          cell.active = false;
-	          cell.container.className = "cell";
-	        });
-	      });
-	    }
-	  }, {
-	    key: 'changeKey',
-	    value: function changeKey(key) {
-	      this.cells.forEach(function (row, idx) {
-	        return row.forEach(function (cell) {
-	          cell.note = _key_constants2.default[key][idx];
-	        });
-	      });
-	    }
-	  }]);
-	
-	  return Grid;
-	}();
-	
-	exports.default = Grid;
-
-/***/ },
-/* 3 */
-/***/ function(module, exports) {
-
-	"use strict";
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	var Cell = function () {
-	  function Cell(note, synth, container) {
-	    _classCallCheck(this, Cell);
-	
-	    this.note = note;
-	    this.synth = synth;
-	    this.active = false;
-	    this.container = container;
-	  }
-	
-	  _createClass(Cell, [{
-	    key: "toggleActive",
-	    value: function toggleActive() {
-	      if (this.active) {
-	        this.active = false;
-	        this.container.className = "cell";
-	      } else {
-	        this.active = true;
-	        this.container.className = "cell active";
-	      }
-	    }
-	  }, {
-	    key: "addHighlight",
-	    value: function addHighlight() {
-	      this.container.className += " highlight";
-	    }
-	  }, {
-	    key: "removeHighlight",
-	    value: function removeHighlight() {
-	      if (this.container.className === "cell highlight") {
-	        this.container.className = "cell";
-	      } else if (this.container.className === "cell active highlight") {
-	        this.container.className = "cell active";
-	      }
-	    }
-	  }, {
-	    key: "play",
-	    value: function play() {
-	      this.synth.triggerAttackRelease(this.note, '8n');
-	    }
-	  }]);
-	
-	  return Cell;
-	}();
-	
-	module.exports = Cell;
-
-/***/ },
-/* 4 */
-/***/ function(module, exports) {
-
-	"use strict";
-	
-	Object.defineProperty(exports, "__esModule", {
-	            value: true
-	});
-	var KEYS = {
-	            "Major": ["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5", "D5", "E5", "F5", "G5", "A5", "B5", "C6", "D6"].reverse(),
-	            "Harmonic Minor": ["C4", "D4", "Eb4", "F4", "G4", "Ab4", "B4", "C5", "D5", "Eb5", "F5", "G5", "Ab5", "B5", "C6", "D6"].reverse(),
-	            "Melodic Minor": ["C4", "D4", "Eb4", "F4", "G4", "A4", "B4", "C5", "D5", "Eb5", "F5", "G5", "A5", "B5", "C6", "D6"].reverse(),
-	            "Harmonic Major": ["C4", "D4", "E4", "F4", "G4", "Ab4", "B4", "C5", "D5", "E5", "F5", "G5", "Ab5", "B5", "C6", "D6"].reverse(),
-	            "Diminished": ["C4", "D4", "Eb4", "F4", "Gb4", "Ab4", "A4", "B4", "C5", "D5", "Eb5", "F5", "Gb5", "Ab5", "A5", "B5"].reverse(),
-	            "Major Pentatonic": ["C4", "D4", "E4", "G4", "A4", "C5", "D5", "E5", "G5", "A5", "C6", "D6", "E6", "G6", "A6", "C7"].reverse(),
-	            "Lydian Pentatonic": ["C4", "E4", "F#4", "A4", "B4", "C5", "E5", "F#5", "A5", "B5", "C6", "E6", "F#6", "A6", "B6", "C7"].reverse(),
-	            "Whole Tone": ["C4", "D4", "E4", "F#4", "G#4", "A#4", "C5", "D5", "E5", "F#5", "G#5", "A#5", "C6", "D6", "E6", "F#6"].reverse(),
-	            "Chromatic": ["C4", "C#4", "D4", "D#4", "E4", "F4", "F#4", "G4", "G#4", "A4", "A#4", "B4", "C5", "C#5", "D5", "D#5"].reverse()
-	};
-	
-	exports.default = KEYS;
-
-/***/ },
 /* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -22235,7 +22235,7 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _key_constants = __webpack_require__(4);
+	var _key_constants = __webpack_require__(2);
 	
 	var _key_constants2 = _interopRequireDefault(_key_constants);
 	
