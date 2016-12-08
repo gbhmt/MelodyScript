@@ -129,7 +129,7 @@ The buttons for toggling different tonalities are keys in the `KEYS` object that
   .....
 ```
 
-The buttons are dynamically to the DOM by looping through the `KEYS` object upon loading the DOM and creating a button to toggle that key, which is accomplished by reassigning the musical notes to the cells on the grid in real time. This makes adding additional buttons for tonalities as simple as adding another key value pair to the `KEYS` object.
+The buttons are dynamically added to the DOM by looping through the `KEYS` object upon loading the DOM and creating a button to toggle that key, which is accomplished by reassigning the musical notes to the cells on the grid in real time. This makes adding additional buttons for tonalities as simple as adding another key value pair to the `KEYS` object.
 
 `/app/grid.js`
 
