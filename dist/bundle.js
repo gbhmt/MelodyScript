@@ -58,6 +58,8 @@
 	
 	var _buttons2 = _interopRequireDefault(_buttons);
 	
+	var _demo = __webpack_require__(6);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	document.addEventListener("DOMContentLoaded", function () {
@@ -79,6 +81,7 @@
 	  var modalOverlay = document.getElementById("modal-overlay");
 	  var closeButton = document.getElementById("close-button");
 	  var openButton = document.getElementById("open-button");
+	  var demoButton = document.getElementById("demo");
 	
 	  closeButton.addEventListener("click", function () {
 	    modal.className = "closed";
@@ -88,6 +91,11 @@
 	  openButton.addEventListener("click", function () {
 	    modal.className = "";
 	    modalOverlay.className = "";
+	  });
+	
+	  demoButton.addEventListener("click", function () {
+	    grid.clear();
+	    grid.activateDemo();
 	  });
 	
 	  slider.addEventListener('change', function () {
@@ -145,6 +153,8 @@
 	
 	var _key_constants2 = _interopRequireDefault(_key_constants);
 	
+	var _demo = __webpack_require__(6);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -162,6 +172,8 @@
 	    this.synth = synth;
 	    this.createGrid();
 	    this.mousedown = false;
+	    this.activateDemo = this.activateDemo.bind(this);
+	    this.demoPositions = _demo.demoPositions;
 	  }
 	
 	  _createClass(Grid, [{
@@ -211,6 +223,15 @@
 	        return row.forEach(function (cell) {
 	          cell.note = _key_constants2.default[key][idx];
 	        });
+	      });
+	    }
+	  }, {
+	    key: 'activateDemo',
+	    value: function activateDemo() {
+	      var _this2 = this;
+	
+	      this.demoPositions.forEach(function (pos) {
+	        _this2.cells[pos[0]][pos[1]].toggleActive();
 	      });
 	    }
 	  }]);
@@ -22286,6 +22307,17 @@
 	}();
 	
 	exports.default = Buttons;
+
+/***/ },
+/* 6 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var demoPositions = exports.demoPositions = [[0, 15], [1, 5], [1, 13], [2, 6], [4, 2], [4, 7], [4, 9], [4, 11], [6, 3], [6, 14], [7, 10], [8, 5], [9, 7], [10, 15], [11, 3], [11, 9], [11, 13], [13, 6], [13, 14], [14, 11], [15, 0]];
 
 /***/ }
 /******/ ]);

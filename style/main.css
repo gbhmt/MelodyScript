@@ -21,8 +21,10 @@ h1 {
   text-align: center;
   letter-spacing: 10px;
   color: #868e8d;
-  margin: 0 auto;
+  margin-top: 60px;
+  margin-bottom: 20px;
 }
+
 
 button {
   user-select: none;
@@ -248,6 +250,10 @@ input:focus::-ms-fill-upper {
   display: none;
 }
 
+#modal-content h1 {
+  margin: 0 auto;
+}
+
 #modal-content button {
   position: absolute;
   right: 0;
@@ -268,13 +274,13 @@ input:focus::-ms-fill-upper {
   width: 30px;
   height: 30px;
   object-fit: cover;
-  margin: 40px 10px 5px 10px;
+  margin: 10px 10px 5px 10px;
 }
 
 .githublogo {
   border-radius: 50%;
 }
 
-#open-button {
+#open-button, #demo {
   margin-left: 30px;
 }

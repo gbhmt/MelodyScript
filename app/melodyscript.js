@@ -1,6 +1,7 @@
 import Grid from './grid.js';
 import Tone from 'Tone';
 import Buttons from './buttons.js';
+import { demo } from './demo.js';
 
 document.addEventListener("DOMContentLoaded", () => {
   const freeverb = new Tone.Freeverb(0.9).toMaster();
@@ -21,6 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const modalOverlay = document.getElementById("modal-overlay");
   const closeButton = document.getElementById("close-button");
   const openButton = document.getElementById("open-button");
+  const demoButton = document.getElementById("demo");
 
 
   closeButton.addEventListener("click", () => {
@@ -31,6 +33,11 @@ document.addEventListener("DOMContentLoaded", () => {
   openButton.addEventListener("click", () => {
     modal.className = "";
     modalOverlay.className = "";
+  });
+
+  demoButton.addEventListener("click", () => {
+    grid.clear();
+    grid.activateDemo();
   });
 
   slider.addEventListener('change', () => {

@@ -1,5 +1,6 @@
 const Cell = require('./cell.js');
 import KEYS from './key_constants.js';
+import { demoPositions } from './demo.js';
 
 class Grid {
   constructor(container, synth) {
@@ -10,6 +11,8 @@ class Grid {
     this.synth = synth;
     this.createGrid();
     this.mousedown = false;
+    this.activateDemo = this.activateDemo.bind(this);
+    this.demoPositions = demoPositions;
   }
 
   createGrid () {
@@ -52,6 +55,12 @@ class Grid {
       return row.forEach((cell) => {
         cell.note = KEYS[key][idx];
       });
+    });
+  }
+
+  activateDemo () {
+    this.demoPositions.forEach((pos) => {
+      this.cells[pos[0]][pos[1]].toggleActive();
     });
   }
 }
