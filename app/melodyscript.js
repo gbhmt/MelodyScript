@@ -26,13 +26,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   closeButton.addEventListener("click", () => {
-    modal.className = "closed";
-    modalOverlay.className = "closed";
+    modal.classList.add('closed');
+    modalOverlay.classList.add('closed');
   });
 
   openButton.addEventListener("click", () => {
-    modal.className = "";
-    modalOverlay.className = "";
+    modal.classList.remove('closed');
+    modalOverlay.classList.remove('closed');
   });
 
   demoButton.addEventListener("click", () => {

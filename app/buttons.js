@@ -14,21 +14,20 @@ class Buttons {
     Object.keys(KEYS).forEach((key) =>{
       const keyButton = document.createElement('button');
       keyButton.innerHTML = key;
+      keyButton.className = 'button';
       keyButton.addEventListener('click', (e) => {
         this.grid.changeKey(key);
         this.select(e.currentTarget);
       });
       this.element.appendChild(keyButton);
     });
-    Array.from(this.element.children)[0].className = "button selected";
+    Array.from(this.element.children)[0].classList.add('selected');
   }
 
   select (target) {
-    const buttons = Array.from(this.element.children);
-    buttons.forEach((button) => {
-      button.className = "button";
-    });
-    target.className = "button selected";
+    const selected = this.element.getElementsByClassName('selected')[0];
+    selected.classList.toggle('selected');
+    target.classList.toggle('selected');
   }
 }
 

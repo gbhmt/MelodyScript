@@ -50,15 +50,15 @@
 	
 	var _grid2 = _interopRequireDefault(_grid);
 	
-	var _Tone = __webpack_require__(4);
+	var _Tone = __webpack_require__(5);
 	
 	var _Tone2 = _interopRequireDefault(_Tone);
 	
-	var _buttons = __webpack_require__(5);
+	var _buttons = __webpack_require__(6);
 	
 	var _buttons2 = _interopRequireDefault(_buttons);
 	
-	var _demo = __webpack_require__(6);
+	var _demo = __webpack_require__(3);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -84,13 +84,13 @@
 	  var demoButton = document.getElementById("demo");
 	
 	  closeButton.addEventListener("click", function () {
-	    modal.className = "closed";
-	    modalOverlay.className = "closed";
+	    modal.classList.add('closed');
+	    modalOverlay.classList.add('closed');
 	  });
 	
 	  openButton.addEventListener("click", function () {
-	    modal.className = "";
-	    modalOverlay.className = "";
+	    modal.classList.remove('closed');
+	    modalOverlay.classList.remove('closed');
 	  });
 	
 	  demoButton.addEventListener("click", function () {
@@ -153,13 +153,13 @@
 	
 	var _key_constants2 = _interopRequireDefault(_key_constants);
 	
-	var _demo = __webpack_require__(6);
+	var _demo = __webpack_require__(3);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
-	var Cell = __webpack_require__(3);
+	var Cell = __webpack_require__(4);
 	
 	var Grid = function () {
 	  function Grid(container, synth) {
@@ -270,6 +270,17 @@
 
 	"use strict";
 	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var demoPositions = exports.demoPositions = [[0, 15], [1, 5], [1, 13], [2, 6], [4, 2], [4, 7], [4, 9], [4, 11], [6, 3], [6, 14], [7, 10], [8, 5], [9, 7], [10, 15], [11, 3], [11, 9], [11, 13], [13, 6], [13, 14], [14, 11], [15, 0]];
+
+/***/ },
+/* 4 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -285,32 +296,23 @@
 	  }
 	
 	  _createClass(Cell, [{
-	    key: "toggleActive",
+	    key: 'toggleActive',
 	    value: function toggleActive() {
-	      if (this.active) {
-	        this.active = false;
-	        this.container.className = "cell";
-	      } else {
-	        this.active = true;
-	        this.container.className = "cell active";
-	      }
+	      this.active = !this.active;
+	      this.container.classList.toggle('active');
 	    }
 	  }, {
-	    key: "addHighlight",
+	    key: 'addHighlight',
 	    value: function addHighlight() {
-	      this.container.className += " highlight";
+	      this.container.classList.add('highlight');
 	    }
 	  }, {
-	    key: "removeHighlight",
+	    key: 'removeHighlight',
 	    value: function removeHighlight() {
-	      if (this.container.className === "cell highlight") {
-	        this.container.className = "cell";
-	      } else if (this.container.className === "cell active highlight") {
-	        this.container.className = "cell active";
-	      }
+	      this.container.classList.remove('highlight');
 	    }
 	  }, {
-	    key: "play",
+	    key: 'play',
 	    value: function play() {
 	      this.synth.triggerAttackRelease(this.note, '8n');
 	    }
@@ -322,7 +324,7 @@
 	module.exports = Cell;
 
 /***/ },
-/* 4 */
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;(function(root, factory){
@@ -22245,7 +22247,7 @@
 	}));
 
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22284,22 +22286,21 @@
 	      Object.keys(_key_constants2.default).forEach(function (key) {
 	        var keyButton = document.createElement('button');
 	        keyButton.innerHTML = key;
+	        keyButton.className = 'button';
 	        keyButton.addEventListener('click', function (e) {
 	          _this.grid.changeKey(key);
 	          _this.select(e.currentTarget);
 	        });
 	        _this.element.appendChild(keyButton);
 	      });
-	      Array.from(this.element.children)[0].className = "button selected";
+	      Array.from(this.element.children)[0].classList.add('selected');
 	    }
 	  }, {
 	    key: 'select',
 	    value: function select(target) {
-	      var buttons = Array.from(this.element.children);
-	      buttons.forEach(function (button) {
-	        button.className = "button";
-	      });
-	      target.className = "button selected";
+	      var selected = this.element.getElementsByClassName('selected')[0];
+	      selected.classList.toggle('selected');
+	      target.classList.toggle('selected');
 	    }
 	  }]);
 	
@@ -22307,17 +22308,6 @@
 	}();
 	
 	exports.default = Buttons;
-
-/***/ },
-/* 6 */
-/***/ function(module, exports) {
-
-	"use strict";
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var demoPositions = exports.demoPositions = [[0, 15], [1, 5], [1, 13], [2, 6], [4, 2], [4, 7], [4, 9], [4, 11], [6, 3], [6, 14], [7, 10], [8, 5], [9, 7], [10, 15], [11, 3], [11, 9], [11, 13], [13, 6], [13, 14], [14, 11], [15, 0]];
 
 /***/ }
 /******/ ]);

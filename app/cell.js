@@ -7,26 +7,18 @@ class Cell {
   }
 
   toggleActive () {
-    if (this.active) {
-      this.active = false;
-      this.container.className = "cell";
-    } else {
-      this.active = true;
-      this.container.className = "cell active";
-    }
+    this.active = !this.active;
+    this.container.classList.toggle('active');
   }
 
   addHighlight () {
-    this.container.className += " highlight";
+    this.container.classList.add('highlight');
   }
 
   removeHighlight () {
-    if (this.container.className === "cell highlight") {
-      this.container.className = "cell";
-    } else if (this.container.className === "cell active highlight") {
-      this.container.className = "cell active";
-    }
+    this.container.classList.remove('highlight');
   }
+
 
   play () {
     this.synth.triggerAttackRelease(this.note, '8n');
