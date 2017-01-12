@@ -113,14 +113,15 @@ The buttons for toggling different tonalities are keys in the `KEYS` object that
 `/app/key_constants.js`
 
 ```JS
-  "Major": ["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5",
-          "D5", "E5", "F5", "G5", "A5", "B5", "C6", "D6"].reverse(),
-  "Harmonic Minor": ["C4", "D4", "Eb4", "F4", "G4", "Ab4", "B4", "C5",
-                "D5", "Eb5", "F5", "G5", "Ab5", "B5", "C6", "D6"].reverse(),
-  "Melodic Minor": ["C4", "D4", "Eb4", "F4", "G4", "A4", "B4", "C5",
-              "D5", "Eb5", "F5", "G5", "A5", "B5", "C6", "D6"].reverse(),
-  "Harmonic Major": ["C4", "D4", "E4", "F4", "G4", "Ab4", "B4", "C5",
-              "D5", "E5", "F5", "G5", "Ab5", "B5", "C6", "D6"].reverse()
+  const KEYS = {
+  "Major": ['D6', 'C6', 'B5', 'A5', 'G5', 'F5', 'E5', 'D5',
+            'C5', 'B4', 'A4', 'G4', 'F4', 'E4', 'D4', 'C4'],
+  "Harmonic Minor": ['D6', 'C6', 'B5', 'Ab5', 'G5', 'F5', 'Eb5',
+                    'D5', 'C5', 'B4', 'Ab4', 'G4', 'F4', 'Eb4', 'D4', 'C4'],
+  "Melodic Minor": ['D6', 'C6', 'B5', 'A5', 'G5', 'F5', 'Eb5', 'D5',
+                    'C5', 'B4', 'A4', 'G4', 'F4', 'Eb4', 'D4', 'C4'],
+  "Harmonic Major": ['D6', 'C6', 'B5', 'Ab5', 'G5', 'F5', 'E5', 'D5',
+                    'C5', 'B4', 'Ab4', 'G4', 'F4', 'E4', 'D4', 'C4'],
   .....
 ```
 
