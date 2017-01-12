@@ -59,14 +59,9 @@ The musical notes are contained in the `cell` object, which is attached to each 
 `/app/cell.js`
 
 ```JS
-toggleActive () {
-    if (this.active) {
-      this.active = false;
-      this.container.className = "cell";
-    } else {
-      this.active = true;
-      this.container.className = "cell active";
-    }
+  toggleActive () {
+    this.active = !this.active;
+    this.container.classList.toggle('active');
   }
 
 play () {
@@ -83,8 +78,8 @@ MelodyScript utilizes the [Tone.js](https://github.com/Tonejs/Tone.js) WebAudio 
 
 ```JS
 const freeverb = new Tone.Freeverb(0.9).toMaster();
-  const synth = new Tone.PolySynth(6).connect(freeverb);
-  synth.volume.value = -10;
+const synth = new Tone.PolySynth(6).connect(freeverb);
+synth.volume.value = -10;
 ```
 
 The execution of the activated pitches is handled by a `Sequence`, a feature of the Tone.js library that allows you to execute a callback for every step in the sequence. It acts similarly to setInterval, with the major differences being that the second argument allows you to enter an array of steps in the sequence that can be referenced as a second argument in the callback, and the third argument, rather than being an interval in ms, is represented by a musical subdivision of time (measures, beats, fractions of beats, etc.). At each step of the sequence, the current column is highlighted visually and each cell in the column is checked to see if it's active. If it is active, the cell's `play()` method is called, and the pitch is played. The `Sequence` is handled by the `Transport`, the global timekeeper provided by the Tone.js library. The slider on the bottom of the page is configured to change the tempo of playback by setting the `bpm` property of the `Transport` object.
