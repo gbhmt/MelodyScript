@@ -16,9 +16,9 @@ class Grid {
   }
 
   createGrid () {
-    for (var i = 0; i < 16; i++) {
+    for (let i = 0; i < 16; i++) {
       this.cells[i] = [];
-      for (var j = 0; j < 16; j++) {
+      for (let j = 0; j < 16; j++) {
         const cellDiv = document.createElement("DIV");
         const cell = new Cell(KEYS["Major"][i], this.synth, cellDiv);
         cellDiv.cell = cell;

@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   const loop = new Tone.Sequence((time, col) => {
-    for (var i = 0; i < 16; i++) {
+    for (let i = 0; i < 16; i++) {
       const currentColumn = columns[col];
       let prevColumn;
       if (col === 0) {
